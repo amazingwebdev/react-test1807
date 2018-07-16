@@ -111,10 +111,11 @@ class App extends React.Component {
                 />
               </FormField>
               <Grid style={{marginTop: 70}}>
-                <GridColumn floated='left' largeScreen={8} mobile={16}>
+                <GridColumn floated='left' mobile={16} tablet={8} widescreen={8} largeScreen={8} computer={8}>
                   <Button basic className={'footer-btn'}>Back</Button>
                 </GridColumn>
-                <GridColumn floated='right' largeScreen={8} mobile={16} style={{display: 'flex', justifyContent: 'flex-end'}}>
+                <GridColumn floated='right' mobile={16} tablet={8} widescreen={8} largeScreen={8} computer={8}
+                            style={{display: 'flex', justifyContent: 'flex-end'}}>
                   <Button type='submit' className={'footer-btn'} disabled={!address || phone.length < 10}>
                     <Statistic text size={'mini'} horizontal>
                       <StatisticValue text style={{display: 'flex', fontSize: 12}}>
