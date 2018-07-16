@@ -4,11 +4,6 @@ import 'styling/semantic.less'
 import React from 'react'
 import MaskedInput from 'react-text-mask'
 import _ from 'lodash'
-// import ReactGoogleMapLoader from "react-google-maps-loader"
-// import PlacesAutocomplete, {
-//   geocodeByAddress,
-//   getLatLng,
-// } from 'react-places-autocomplete';
 import {
   Button,
   Header,
@@ -23,9 +18,9 @@ import {
   Icon,
   Statistic,
   StatisticValue,
-  Label,
   SearchResults
 } from 'semantic-ui-react'
+import './App.css';
 
 const mockData = [
   {'title': '221 1nd st. Sam Francisco, CA, 94105'},
@@ -44,13 +39,14 @@ class App extends React.Component {
     name: 'Lee Cooper LLC.',
     phone: '',
     isLoading: false,
-    results: []
+    results: [],
+    query: ''
   };
 
-  handleResultSelect = (e, { result }) => this.setState({ address: result.title });
+  handleResultSelect = (e, { result }) => this.setState({ address: result.title, query: result.title });
 
   handleSearchChange = (e, { value }) => {
-    this.setState({ isLoading: true, address: value });
+    this.setState({ isLoading: true, query: value, address: '' });
 
     setTimeout(() => {
       if (!this.state.address) this.setState({isLoading: false});
@@ -65,102 +61,63 @@ class App extends React.Component {
     }, 300)
   };
 
-  // handleChange = address => {
-  //   this.setState({ address });
-  // };
-  //
-  // handleSelect = address => {
-  //   geocodeByAddress(address)
-  //     .then(results => getLatLng(results[0]))
-  //     .then(latLng => console.log('Success', latLng))
-  //     .catch(error => console.error('Error', error));
-  // };
-
   render() {
-    const {name, phone, address, isLoading, results} = this.state;
+    const {name, phone, address, isLoading, results, query} = this.state;
 
     return (
       <Container>
-        <Header size='huge'>hyke</Header>
+        <Header size='huge' style={{marginTop: 20, paddingLeft: 40, fontSize: 30}}>hyke</Header>
         <Divider />
-        <Grid>
-          <GridColumn width={8} floated={'center'}>
+        <Grid centered>
+          <GridColumn width={10}>
+            <Header style={{marginTop: 70, fontSize: '2.5rem', marginBottom: 30}}>Business information</Header>
             <Form>
-              <FormField>
-                <label>Your business name</label>
+              <FormField style={{marginBottom: 30}}>
+                <Header as={'h3'}>Your business name</Header>
                 <Input disabled value={name} />
               </FormField>
-              <FormField>
+              <FormField style={{marginBottom: 30}}>
                 <div>
-                  <label>What's your business address?</label>
-                  <i>i.e your home address if you're working from home</i>
+                  <Header as={'h3'}>What's your business address?</Header>
+                  <p>i.e your home address if you're working from home</p>
                 </div>
                 <Search
+                  input={<input type={'text'} style={{fontSize: 16, borderLeftWidth: 0, borderRightWidth: 0, borderTopWidth: 0, marginTop: 15, color: 'blueviolet'}} />}
                   loading={isLoading}
                   onResultSelect={this.handleResultSelect}
                   onSearchChange={_.debounce(this.handleSearchChange, 500, { leading: true })}
                   results={results}
-                  value={address}
+                  value={query}
                   icon={<div />}
-                  resultRenderer={({title}) => <div style={{width: '100%', height: '100%'}}>{title}</div>}
+                  resultRenderer={({title}) => <div style={{width: '100%', height: '100%', paddingTop: 10, paddingBottom: 10}}>{title}</div>}
                   {...this.props}>
-                  <SearchResults style={{backgroundColor: 'yellow'}}/>
+                  <SearchResults style={{backgroundColor: 'yellow', maxHeight: 190}}/>
                 </Search>
-                {/*<PlacesAutocomplete*/}
-                  {/*value={address}*/}
-                  {/*onChange={this.handleChange}*/}
-                  {/*onSelect={this.handleSelect}*/}
-                {/*>*/}
-                  {/*{({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (*/}
-                    {/*<div>*/}
-                      {/*<Input*/}
-                        {/*{...getInputProps({*/}
-                          {/*placeholder: '',*/}
-                          {/*className: 'location-search-input',*/}
-                        {/*})}*/}
-                      {/*/>*/}
-                      {/*<div className="autocomplete-dropdown-container">*/}
-                        {/*{loading && <div>Loading...</div>}*/}
-                        {/*{suggestions.map(suggestion => {*/}
-                          {/*const className = suggestion.active*/}
-                            {/*? 'suggestion-item--active'*/}
-                            {/*: 'suggestion-item';*/}
-                          {/*// inline style for demonstration purpose*/}
-                          {/*const style = suggestion.active*/}
-                            {/*? { backgroundColor: '#fafafa', cursor: 'pointer' }*/}
-                            {/*: { backgroundColor: '#ffffff', cursor: 'pointer' };*/}
-                          {/*return (*/}
-                            {/*<div*/}
-                              {/*{...getSuggestionItemProps(suggestion, {*/}
-                                {/*className,*/}
-                                {/*style,*/}
-                              {/*})}*/}
-                            {/*>*/}
-                              {/*<span>{suggestion.description}</span>*/}
-                            {/*</div>*/}
-                          {/*);*/}
-                        {/*})}*/}
-                      {/*</div>*/}
-                    {/*</div>*/}
-                  {/*)}*/}
-                {/*</PlacesAutocomplete>*/}
               </FormField>
               <FormField>
                 <div>
-                  <label>What's your business phone number?</label>
-                  <i>Enter your mobile number, if you don't have a  separate business phone number</i>
+                  <Header as={'h3'}>What's your business phone number?</Header>
+                  <p>Enter your mobile number, if you don't have a  separate business phone number</p>
                 </div>
                 <Input
                   value={phone}
-                  children={<MaskedInput mask={[ /[1-9]/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]} />}
+                  children={
+                    <MaskedInput
+                      mask={(mask) => {
+                        this.setState({phone: mask.replace(/\D/g,'')});
+                        return [ /[1-9]/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]
+                      }}
+                      style={{fontSize: 16, borderLeftWidth: 0, borderRightWidth: 0, borderTopWidth: 0, color: 'blueviolet', marginTop: 15}}
+                    />
+                  }
                 />
               </FormField>
-              <Grid>
-                <GridColumn floated='left' width={4}>
-                  <Button>Back</Button>
+              <Grid style={{marginTop: 70}}>
+                <GridColumn floated='left' width={8}>
+                  <Button basic className={'footer-btn'}>Back</Button>
                 </GridColumn>
-                <GridColumn floated='right' width={4}>
-                  <Button type='submit'>
+                <GridColumn floated='right' width={8} style={{display: 'flex', justifyContent: 'flex-end'}}>
+                  <Button type='submit' className={'footer-btn'} disabled={!address || phone.length < 10}>
                     <Statistic text size={'mini'} horizontal>
                       <StatisticValue text style={{display: 'flex', fontSize: 12}}>
                         Continue
@@ -177,14 +134,5 @@ class App extends React.Component {
     )
   }
 }
-//
-// const App = () =>
-//   <ReactGoogleMapLoader
-//     params={{
-//       key: MAP_KEY, // Define your api key here
-//       libraries: "places,geometry", // To request multiple libraries, separate them with a comma
-//     }}
-//     render={googleMaps => googleMaps && <Main/>}
-//   />
 
 export default App

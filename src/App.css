@@ -1,0 +1,42 @@
+.ui.search > .results {
+  overflow-y: auto;
+  max-height: 190px;
+  margin-top: 1px;
+  width: 100%
+}
+
+.ui.search > .results .result {
+  border-width: 0;
+}
+
+.ui.search > .results .result:hover {
+  color: blueviolet;
+}
+
+.footer-btn {
+  padding: 20px 60px !important;
+}
+
+.ui.basic.button, .ui.button {
+  color: blueviolet !important;
+  justify-content: center;
+  width: 180px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+}
+
+.ui.button:disabled[type='submit'] {
+  background-color: gray !important;
+}
+
+.ui.button[type='submit'] {
+  background-color: blueviolet !important;
+}
+
+.ui.mini.statistic > .text.value {
+  display: flex;
+  font-size: 13px !important;
+  color: white !important;
+  font-weight: 200;
+}
