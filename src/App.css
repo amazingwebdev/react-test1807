@@ -40,3 +40,12 @@
   color: white !important;
   font-weight: 200;
 }
+
+.ui.grid > [class*="sixteen wide mobile"].column {
+  display: flex;
+  justify-content: center !important;
+}
+
+.ui.grid > [class*="sixteen wide mobile"].column > button {
+  flex: 1;
+}

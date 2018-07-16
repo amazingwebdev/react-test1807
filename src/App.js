@@ -69,7 +69,7 @@ class App extends React.Component {
         <Header size='huge' style={{marginTop: 20, paddingLeft: 40, fontSize: 30}}>hyke</Header>
         <Divider />
         <Grid centered>
-          <GridColumn width={10}>
+          <GridColumn largeScreen={10} mobile={14}>
             <Header style={{marginTop: 70, fontSize: '2.5rem', marginBottom: 30}}>Business information</Header>
             <Form>
               <FormField style={{marginBottom: 30}}>
@@ -90,9 +90,7 @@ class App extends React.Component {
                   value={query}
                   icon={<div />}
                   resultRenderer={({title}) => <div style={{width: '100%', height: '100%', paddingTop: 10, paddingBottom: 10}}>{title}</div>}
-                  {...this.props}>
-                  <SearchResults style={{backgroundColor: 'yellow', maxHeight: 190}}/>
-                </Search>
+                 />
               </FormField>
               <FormField>
                 <div>
@@ -113,10 +111,10 @@ class App extends React.Component {
                 />
               </FormField>
               <Grid style={{marginTop: 70}}>
-                <GridColumn floated='left' width={8}>
+                <GridColumn floated='left' largeScreen={8} mobile={16}>
                   <Button basic className={'footer-btn'}>Back</Button>
                 </GridColumn>
-                <GridColumn floated='right' width={8} style={{display: 'flex', justifyContent: 'flex-end'}}>
+                <GridColumn floated='right' largeScreen={8} mobile={16} style={{display: 'flex', justifyContent: 'flex-end'}}>
                   <Button type='submit' className={'footer-btn'} disabled={!address || phone.length < 10}>
                     <Statistic text size={'mini'} horizontal>
                       <StatisticValue text style={{display: 'flex', fontSize: 12}}>
